@@ -44,8 +44,14 @@ RUN chmod u+x /opt/run && \
     mkdir -p /var/log/supervisor && mkdir -p /opt/supervisor && \
     chmod u+x /opt/supervisor/rundeck && chmod u+x /opt/supervisor/mysql_supervisor
 
+RUN apt-get update && apt-get install -y vim-nox mailutils
+
+RUN /bin/echo -e "\n\ngrails.mail.host=10.1.1.1\ngrails.mail.port=25\n" >> /etc/rundeck/rundeck-config.properties
+RUN sed -i 's/<session-timeout>30/<session-timeout>43200/' /var/lib/rundeck/exp/webapp/WEB-INF/web.xml
+
 EXPOSE 4440 4443
 
 VOLUME  ["/etc/rundeck", "/var/rundeck", "/var/lib/rundeck", "/var/lib/mysql", "/var/log/rundeck", "/opt/rundeck-plugins", "/var/lib/rundeck/logs", "/var/lib/rundeck/var/storage"]
 
-ENTRYPOINT ["/opt/run"]
+#ENTRYPOINT ["/opt/run"]
+CMD [ "/opt/run" ]

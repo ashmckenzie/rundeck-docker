@@ -7,6 +7,9 @@ CURRENT_WORKING_DIR=$(shell pwd)
 build:
 	docker build -f ${DOCKERFILE} -t ${IMAGE_NAME}:latest .
 
+fresh_build:
+	docker build --no-cache -f ${DOCKERFILE} -t ${IMAGE_NAME}:latest .
+
 run: build
 	docker run --rm -ti -p 4441:4440 -v ${CURRENT_WORKING_DIR}/tmp:/config ${IMAGE_NAME}:latest
 
